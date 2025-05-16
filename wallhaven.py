@@ -26,13 +26,10 @@ def get_directory():
 def delete_files_in_folder(folder_path):
     for filename in os.listdir(folder_path):
         file_path = os.path.join(folder_path, filename)
-        try:
-            if os.path.isfile(file_path):
-                os.remove(file_path)
-        except Exception as e:
-            print(f'Ошибка при удалении файла {file_path}. {e}')
+        if os.path.isfile(file_path):
+            os.remove(file_path)
 
-#Функция поиска последнего номера фона
+#Last number in folder
 def last_file_in_folder(folder_path):
     all_files = os.listdir(folder_path)
     n = len(all_files)
@@ -44,7 +41,7 @@ def last_file_in_folder(folder_path):
         all_files.sort()
         return all_files[-1]
 
-#Функция поиска страниц и фонов
+#Search pages and wallpapers
 def pictures(link):
     responce = requests.get(link).text
     soup = BeautifulSoup(responce, 'lxml')
@@ -55,7 +52,7 @@ def pictures(link):
     int_pages = int_pictures // 24 + 1
     return int_pictures, int_pages
 
-#Ввод тегов и количество фонов
+#Enter tags
 folder_path = get_directory()
 print('Enter wallpaper tags: ', end = '')
 name = input()
@@ -68,7 +65,7 @@ if resolutions == '':
     resolutions = '1920x1080'
 resolutions = resolutions.replace(' ', '%2C')
 
-#Вывод количества страниц
+#Output the number of wallpapers
 link = "https://wallhaven.cc/search?q=" + name + '&resolutions='+ resolutions + '&purity=110&sorting=views'
 int_pictures, int_pages = pictures(link)
 while(int_pictures == 0):
@@ -87,7 +84,7 @@ while(int_pictures == 0):
 print('Total pages:', int_pages)
 print('Total pictures:', int_pictures)
 
-#Поиск ссылок фонов
+#Get url of wallpapers
 found = []
 for i in range(int_pages):
     link = "https://wallhaven.cc/search?q=" + name + '&resolutions='+ resolutions + '&purity=110&sorting=views' + '&page=' + str(i + 1)
@@ -101,7 +98,7 @@ for i in range(int_pages):
     for j in li:
         found.append(j.find('a').get('href'))
 
-#Удаление фонов
+#Delete old wallpapers
 print('Do you want to delete old wallpapers? Y/n(Y):', end = '')
 yeah = input()
 if yeah == '':
@@ -113,7 +110,7 @@ else:
     n = 0
     print('Old wallpapers deleted')
 
-#Выбор количесвта устанавливаемых фонов
+#Selecting the number of backgrounds
 print('Install all or severall?(All/Num):', end = '')
 number = input()
 if number == 'A' or number == 'a' or number == 'All' or number == '':
@@ -123,7 +120,7 @@ else:
     print('Installing {} wallpapers...'.format(number))
 number = int(number)
 
-#Скачивание фонов
+#Download wallpapers
 for i in range(number):
     responce = requests.get(found[i])
     while(responce.status_code == 429):
