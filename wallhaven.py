@@ -3,9 +3,26 @@ import time
 import os
 import sys
 from bs4 import BeautifulSoup
-folder_path = '/home/xeing0de/Wallpapers'
 
-#Функция удаления файлов в папке
+#Get directory
+def get_directory():
+    while True:
+        home_dir = os.environ.get("HOME")
+        def_path = os.path.join(home_dir, "Wallpapers")
+        path = input('Enter the path to save(Default=\'~/Wallpapers\'): ').strip()
+        path = os.path.expanduser(path)
+        if path == '' and os.path.isdir('~/Wallpapers'):
+            print(1)
+            return def_path
+        elif not os.path.isdir(path):
+            if path == '':
+                print(2)
+                path = def_path
+            print(3)
+            os.makedirs(path, exist_ok=True)
+        return path
+
+#Delete files in folder
 def delete_files_in_folder(folder_path):
     for filename in os.listdir(folder_path):
         file_path = os.path.join(folder_path, filename)
@@ -39,6 +56,7 @@ def pictures(link):
     return int_pictures, int_pages
 
 #Ввод тегов и количество фонов
+folder_path = get_directory()
 print('Enter wallpaper tags: ', end = '')
 name = input()
 name = name.replace(' ', '%20')
