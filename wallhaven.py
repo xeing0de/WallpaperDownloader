@@ -52,6 +52,10 @@ def pictures(link):
     int_pages = int_pictures // 24 + 1
     return int_pictures, int_pages
 
+#Creating a link
+def create_link():
+    link = input('Enter wallpaper tags:')
+
 #Enter tags
 folder_path = get_directory()
 print('Enter wallpaper tags: ', end = '')
@@ -80,7 +84,6 @@ while(int_pictures == 0):
     resolutions = resolutions.replace(' ', '%2C')
     link = "https://wallhaven.cc/search?q=" + name + '&resolutions='+ resolutions + '&purity=110&sorting=views'
     int_pictures, int_pages = pictures(link)
-    print('Wait...')
 print('Total pages:', int_pages)
 print('Total pictures:', int_pictures)
 
