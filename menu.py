@@ -25,7 +25,7 @@ def purity():
     sel = input('Enter: ')
     uniq = set(sel)
 
-    if not uniq.issubset({'1','2','3'}):
+    if not uniq.issubset({'','1','2','3'}):
         print('Select only 1, 2 or 3')
         return purity()
     if sel == '':
@@ -39,9 +39,31 @@ def ai_filter():
     print('1)Turn')
     print('2)Off')
     choice = input('Enter: ')
-    if choice in '12':
-        return '1' if choice == '1' else '2'
+    if choice in '12' and len(choise) <= 1:
+        return '1' if choice == '1' or choise == '' else '2'
     else:
         print('Select 1 or 2')
         return ai_filter()
+
+def sorting():
+    print('Select type of sorting(Default Random):')
+    print('1)Relevance  5)Favorites')
+    print('2)Random     6)Toplist')
+    print('3)Date added 7)Hot')
+    print('4)Views')
+    sort_type = {'1': 'relevance',
+                 '2': 'random',
+                 '3': 'date_added',
+                 '4': 'views',
+                 '5': 'favorites',
+                 '6': 'toplist',
+                 '7': 'hot'} 
+
+    sort = input('Enter: ')
+    if sort == '':
+        return 'random'
+    elif not sort in '1234567' or len(sort) > 1:
+        print('Select only between 1-7')
+        return sorting()
+    return sort_type['sort']
 
