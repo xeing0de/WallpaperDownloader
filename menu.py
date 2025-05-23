@@ -39,8 +39,8 @@ def ai_filter():
     print('1)Turn')
     print('2)Off')
     choice = input('Enter: ')
-    if choice in '12' and len(choise) <= 1:
-        return '1' if choice == '1' or choise == '' else '2'
+    if choice in '12' and len(choice) <= 1:
+        return '1' if choice == '1' or choice == '' else '2'
     else:
         print('Select 1 or 2')
         return ai_filter()
@@ -65,5 +65,5 @@ def sorting():
     elif not sort in '1234567' or len(sort) > 1:
         print('Select only between 1-7')
         return sorting()
-    return sort_type['sort']
+    return sort_type[sort]
 
