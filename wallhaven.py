@@ -4,6 +4,7 @@ import os
 import sys
 from menu import *
 from bs4 import BeautifulSoup
+from tqdm import tqdm
 
 #Get directory
 def get_directory():
@@ -140,7 +141,7 @@ else:
 number = int(number)
 
 #Download wallpapers
-for i in range(number):
+for i in tqdm(range(number), desc="Progress", unit="img"):
     responce = requests.get(found[i])
     while(responce.status_code == 429):
         responce = requests.get(found[i])  
@@ -157,7 +158,4 @@ for i in range(number):
         os.remove(folder_path + '/' + str(n) + '.jpg')
         with open(f'{folder_path}/{n}.png', 'wb') as file:
             file.write(image_bytes)
-    n = n + 1
-    sys.stdout.write("\rDownloading {}...".format(i+1))
-    sys.stdout.flush()
 print('\nAll done')
