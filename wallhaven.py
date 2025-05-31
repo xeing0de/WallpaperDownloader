@@ -2,6 +2,7 @@ import requests
 import time
 import os
 import sys
+from menu import *
 from bs4 import BeautifulSoup
 
 #Get directory
@@ -12,13 +13,10 @@ def get_directory():
         path = input('Enter the path to save(Default=\'~/Wallpapers\'): ').strip()
         path = os.path.expanduser(path)
         if path == '' and os.path.isdir('~/Wallpapers'):
-            print(1)
             return def_path
         elif not os.path.isdir(path):
             if path == '':
-                print(2)
                 path = def_path
-            print(3)
             os.makedirs(path, exist_ok=True)
         return path
 
@@ -60,29 +58,41 @@ def create_link():
 folder_path = get_directory()
 print('Enter wallpaper tags: ', end = '')
 name = input()
-name = name.replace(' ', '%20')
-name = name.replace('#', '%23')
-print('Enter resolutions(1920x1080): ', end = '')
-resolutions = input()
+name = name.replace(' ', '%20').replace('#', '%23')
+category = categories()
+purit = purity()
+ai = ai_filter()
+sort = sorting()
+rtype, resolutions = resol()
+
 print('Wait...')
-if resolutions == '':
-    resolutions = '1920x1080'
-resolutions = resolutions.replace(' ', '%2C')
 
 #Output the number of wallpapers
-link = "https://wallhaven.cc/search?q=" + name + '&resolutions='+ resolutions + '&purity=110&sorting=views'
+link = ("https://wallhaven.cc/search?q=" + name + 
+        '&'+ rtype + '=' + resolutions + 
+        '&purity=' + purit +
+        '&sorting=' + sort +
+        '&ai_art_filter=' + ai +
+        '&categories=' + category)
+print(link)
 int_pictures, int_pages = pictures(link)
 while(int_pictures == 0):
     print('No such wallpapers, enter other tags:', end = '')
-    name = input()
-    name = name.replace(' ', '%20')
-    name = name.replace('#', '%23')
-    print('Enter resolutions(1920x1080): ', end = '')
-    resolutions = input()
-    if resolutions == '':
-        resolutions = '1920x1080'
-    resolutions = resolutions.replace(' ', '%2C')
-    link = "https://wallhaven.cc/search?q=" + name + '&resolutions='+ resolutions + '&purity=110&sorting=views'
+    category = categories()
+    purit = purity()
+    ai = ai_filter()
+    sort = sorting()
+    rtype, resolutions = resol()
+
+    print('Wait...')
+
+    #Output the number of wallpapers
+    link = ("https://wallhaven.cc/search?q=" + name + 
+        '&'+ rtype + '=' + resolutions + 
+        '&purity=' + purit +
+        '&sorting=' + sort +
+        '&ai_art_filter=' + ai +
+        '&categories=' + category)
     int_pictures, int_pages = pictures(link)
 print('Total pages:', int_pages)
 print('Total pictures:', int_pictures)
@@ -90,7 +100,13 @@ print('Total pictures:', int_pictures)
 #Get url of wallpapers
 found = []
 for i in range(int_pages):
-    link = "https://wallhaven.cc/search?q=" + name + '&resolutions='+ resolutions + '&purity=110&sorting=views' + '&page=' + str(i + 1)
+    link = ("https://wallhaven.cc/search?q=" + name + 
+        '&'+ rtype + '=' + resolutions + 
+        '&purity=' + purit +
+        '&sorting=' + sort +
+        '&ai_art_filter=' + ai +
+        '&categories=' + category +
+        '&page=' + str(i+1))
     responce = requests.get(link)
     while(responce.status_code == 429):
         responce = requests.get(link)  

@@ -66,8 +66,8 @@ def sorting():
         return sorting()
     return sort_type[sort]
 
-def ratio():
-    ratios = ['2560x1080','3440x1440','3840x1600','','',
+def resol():
+    resolutions = ['2560x1080','3440x1440','3840x1600','','',
               '1280x720','1600x900','1920x1080','2560x1440','3840x2160',
               '1280x800','1600x1000','1920x1200','2560x1600','3840x2400',
               '1280x960','1600x1200','1920x1440','2560x1920','3840x2880',
@@ -84,25 +84,25 @@ def ratio():
         for i in range(5):
             print(rtype[i].ljust(9),end='| ')
             for j in range(i*5,5 + i*5):
-                if ratios[j] != '':
-                    print((str(j+1)+')'+ratios[j]).ljust(12),sep='',end='| ')
+                if resolutions[j] != '':
+                    print((str(j)+')'+resolutions[j]).ljust(12),sep='',end='| ')
             print('\n'+'-'*80)
     else:
         print('Select only between 1-3')
-        return ratio()
+        return resol()
 
     if '3' in choice:
         print('Enter custom resolution: ',end='')
         custom = input()
         if custom == '':
             print('Custom is empty.')
-            return ratio()
+            return resol()
         if '1' in choice:
             if len(custom.split()) == 1:
                 return typ['1'], custom
             else:
                 print('Enter one.')
-                return ratio()
+                return resol()
     if '1' in choice:
         rezstring = input('Enter resolution: ')
     else:
@@ -111,8 +111,8 @@ def ratio():
     rez = ''.join(i for i in rez if i.isdigit() or i == ' ')
     if '1' in choice and len(rez) > 1:
         print('Too many screen resolutions, enter only one.')
-        return ratio()
+        return resol()
     else:
-        back = ' '.join(ratios[int(i)] for i in rez)+custom
+        back = ' '.join(resolutions[int(i)] for i in rez)+custom
         return typ[choice.replace('3','')], back.replace(' ','%2C') 
 
