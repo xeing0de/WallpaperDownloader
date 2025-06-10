@@ -78,7 +78,10 @@ link = ("https://wallhaven.cc/search?q=" + name +
 print(link)
 int_pictures, int_pages = pictures(link)
 while(int_pictures == 0):
-    print('No such wallpapers, enter other tags:', end = '')
+    print('No such wallpapers, enter other tags:', end = '\n')
+    print('Enter wallpaper tags: ', end = '')
+    name = input()
+    name = name.replace(' ', '%20').replace('#', '%23')
     category = categories()
     purit = purity()
     ai = ai_filter()
@@ -111,6 +114,7 @@ for i in range(int_pages):
     responce = requests.get(link)
     while(responce.status_code == 429):
         responce = requests.get(link)  
+        time.sleep(3)
     soup = BeautifulSoup(responce.text, 'lxml')
     block = soup.find('div', id = "thumbs")
     section = block.find('section')
@@ -145,17 +149,18 @@ for i in tqdm(range(number), desc="Progress", unit="img"):
     responce = requests.get(found[i])
     while(responce.status_code == 429):
         responce = requests.get(found[i])  
+        time.sleep(3)
     soup = BeautifulSoup(responce.text, 'lxml')
     block = soup.find('main', id = "main")
     img = block.find('img', id = "wallpaper")
     url_img = img.get('src')
     image_bytes = requests.get(f'{url_img}').content
-    with open(f'{folder_path}/{n}.jpg', 'wb') as file:
+    with open(f'{folder_path}/{i}.jpg', 'wb') as file:
         file.write(image_bytes)
-    with open(f'{folder_path}/{n}.jpg', 'rb') as f:
+    with open(f'{folder_path}/{i}.jpg', 'rb') as f:
         pngjpg = f.readline()
     if 'PNG' in str(pngjpg):
-        os.remove(folder_path + '/' + str(n) + '.jpg')
-        with open(f'{folder_path}/{n}.png', 'wb') as file:
+        os.remove(folder_path + '/' + str(i) + '.jpg')
+        with open(f'{folder_path}/{i}.png', 'wb') as file:
             file.write(image_bytes)
 print('\nAll done')

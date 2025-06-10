@@ -114,5 +114,5 @@ def resol():
         return resol()
     else:
         back = ' '.join(resolutions[int(i)] for i in rez)+custom
-        return typ[choice.replace('3','')], back.replace(' ','%2C') 
+        return typ[choice.replace(' ','')], back.replace(' ','%2C') 
 
